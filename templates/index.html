@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heart Disease Predictions</title>
+</head>
+<body>
+    <h1>Heart Disease Predictions</h1>
+    <form action="/predict" method="post">
+        <label for="age">Age:</label>
+        <input type="number" name="age" required><br><br>
+
+        <label for="sex">Sex (1 = Male, 0 = Female):</label>
+        <input type="number" name="sex" required><br><br>
+
+        <label for="cp">Chest Pain Type:</label>
+        <input type="number" name="cp" required><br><br>
+
+        <label for="trestbps">Resting Blood Pressure:</label>
+        <input type="number" name="trestbps" required><br><br>
+
+        <label for="chol">Cholesterol:</label>
+        <input type="number" name="chol" required><br><br>
+
+        <label for="fbs">Fasting Blood Sugar (1 = True, 0 = False):</label>
+        <input type="number" name="fbs" required><br><br>
+
+        <label for="restecg">Resting Electrocardiographic Results:</label>
+        <input type="number" name="restecg" required><br><br>
+
+        <label for="thalach">Maximum Heart Rate:</label>
+        <input type="number" name="thalach" required><br><br>
+
+        <label for="exang">Exercise Induced Angina (1 = Yes, 0 = No):</label>
+        <input type="number" name="exang" required><br><br>
+
+        <label for="oldpeak">Depression Induced by Exercise:</label>
+        <input type="number" name="oldpeak" required><br><br>
+
+        <label for="slope">Slope of Peak Exercise ST Segment:</label>
+        <input type="number" name="slope" required><br><br>
+
+        <label for="ca">Number of Major Vessels Colored by Fluoroscopy:</label>
+        <input type="number" name="ca" required><br><br>
+
+        <label for="thal">Thalassemia (1 = Normal, 2 = Fixed Defect, 3 = Reversible Defect):</label>
+        <input type="number" name="thal" required><br><br>
+
+        <button type="submit">Predict</button>
+    </form>
+</body>
+</html>

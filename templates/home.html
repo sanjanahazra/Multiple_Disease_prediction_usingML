@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heart Disease Predictions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<style>
+    * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+    .banner_container{
+    margin:  0;
+}
+
+.banner_image{
+    width: 100%;
+    height: 550px;
+}
+
+.carousel-item {
+        position: relative;
+    }
+
+    /* Add a dark overlay on the images */
+    
+
+    .carousel-item .carousel-image-overlay::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+        z-index: 1;
+    }
+
+    .carousel-caption {
+        /* position: relative; */
+        z-index: 2;
+        color: #fff; /* White text for contrast */
+    }
+
+    .carousel-caption h5, .carousel-caption p {
+        font-weight: bold;
+    }
+
+    .overlay-text {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 1.5em;
+        font-weight: bold;
+        text-align: center;
+        z-index: 3; /* Ensure it stays on top of the image */
+    }
+
+    .overlay-text h2 {
+        margin: 0;
+        font-size: 2.5em;
+    }
+                    .about-section {
+                      background-color: #f1abab; /* Light box color */
+                      /* padding: 20px 50px; Padding for spacing */
+                      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+                      /* text-align: left; Left-align the text */
+                      width: 100%; /* Full-width section */
+                    }
+                    .about-section h1 {
+                      margin: 0;
+                      font-size: 28px;
+                      color: #333; /* Text color */
+                    }
+
+
+                    .faq-section {
+        padding: 50px 0;
+    }
+    .faq-card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    .faq-card .card-header {
+        background-color: #7da5a9;
+        color: #ffffff;
+        padding: 15px 20px;
+        cursor: pointer;
+    }
+    .faq-card .card-header:hover {
+        background-color: #0b6fa6;
+    }
+    .faq-card .faq-title {
+        /* font-size: 18px; */
+        margin: 0;
+    }
+    .faq-card .collapse {
+        background-color: #f9fbfd;
+        border-top: 1px solid #ddd;
+    }
+    .faq-card .card-body {
+        padding: 15px 20px;
+        font-size: 16px;
+        color: #555;
+        line-height: 1.6;
+    }
+    .faq-card .card-body p {
+        margin: 0;
+    }
+    /* Optional: Custom Scrollbar */
+    .faq-card .collapse::-webkit-scrollbar {
+        width: 8px;
+    }
+    .faq-card .collapse::-webkit-scrollbar-thumb {
+        background-color: #0b6fa6;
+        border-radius: 4px;
+    }
+
+
+
+    /* feedback */
+
+    .rating {
+            direction: ltr;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+
+        .rating input[type="radio"] {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 2rem;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .rating label:hover,
+        .rating label:hover ~ label,
+        .rating input[type="radio"]:checked ~ label {
+            color: #f39c12;
+        }
+
+        .feedback-form-container {
+            background-color: #f8f9fa;
+        }
+
+        .customer-feedback-container {
+            background-color: #e3f2fd;
+            max-height: 460px;
+            overflow-y: auto;
+        }
+
+        .feedback-item {
+            padding: 10px;
+            background: #ffffff;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .feedback-item strong {
+            font-size: 1.1rem;
+        }
+
+        .feedback-item span {
+            color: #f39c12;
+        }
+
+        /* Hide the secret key input by default */
+        .secret-key-input {
+            display: none;
+        }
+
+
+
+    footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  /* position: fixed; */
+  width: 100%;
+  bottom: 0;
+}
+
+footer a {
+  color: #f2f2f2;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+
+
+@media (max-width: 768px) {
+    .customer-feedback-container {
+        max-height: 150px;
+    }
+}
+
+.customer-feedback-container::-webkit-scrollbar {
+    width: 8px;
+}
+.customer-feedback-container::-webkit-scrollbar-thumb {
+    background-color: #094561;
+    border-radius: 4px;
+}
+</style>
+
+
+
+<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #094561;">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- <a class="navbar-brand" href="">
+        <img src="" alt="Multiple Disease Prediction" style="height: 60px;">
+      </a> -->
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#home" style="
+              color: #ffffff;">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about"style="
+              color: #ffffff;">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('heart') }}"style="
+              color: #ffffff;">Heart</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('diabetes') }}"style="
+              color: #ffffff;">Diabetes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('cancer') }}"style="
+              color: #ffffff;">Cancer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('parkinsons') }}"style="
+              color: #ffffff;">Parkinson’s</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#faq's"style="
+              color: #ffffff;">FAQ</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</nav>
+
+<body>    
+    <div id="carouselExampleMerged" class="carousel slide" data-bs-ride="carousel" style="padding-top: 59px;">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleMerged" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleMerged" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleMerged" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <!-- First Slide -->
+            <div class="carousel-item active">
+                <div class="carousel-image-overlay">
+                    <img src="{{ url_for('static', filename='bg/dctor-work-digital-tablet-healthcare-doctor-technology-tablet-using-computer-Medium.jpeg') }}" class="d-block w-100 banner_image" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        
+                        <h3>"Personalized Health Insights"</h3>
+                        <p>"Unlock the potential of your health data with our advanced personalized health insights. Our system analyzes your unique symptoms, medical history, and lifestyle choices to offer you tailored recommendations that help you make informed health decisions. Whether you're looking to prevent a potential health issue or improve your overall well-being, our platform provides you with actionable insights designed specifically for you."
+                        </p>
+                    </div>
+                    <div class="overlay-text">
+                        <h2>Predict With AI ML</h2>
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- Second Slide -->
+            <div class="carousel-item">
+                <div class="carousel-image-overlay">
+                    <img src="{{ url_for('static', filename='bg/HealthcarePredictions_Hero_1080x607.jpg') }}" class="d-block w-100 banner_image" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3>"Track Your Health Journey"</h3>
+                        <p>"Your health is a journey, and tracking it over time is key to ensuring that you're always on the right path. With our comprehensive health monitoring tools, you can track your key health metrics, including risk factors, lifestyle habits, and medical conditions. By visualizing trends and monitoring changes, you can make better, data-driven decisions to optimize your health. Whether you're managing a chronic condition or simply looking to improve your wellness, we provide the tools to support your long-term health goals."</p>
+                    </div>
+                    <div class="overlay-text">
+                        <h2>Check Your Health</h2>
+                    </div>
+                </div>
+            </div>
+            <!-- Third Slide -->
+            <div class="carousel-item">
+                <div class="carousel-image-overlay">
+                    <img src="{{ url_for('static', filename='bg/Baldwin-3-How-Diabetes-Affects-Your-Heart-and-Kidneys.jpg') }}" class="d-block w-100 banner_image" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3>"Predict Multiple Diseases"</h3>
+                        <p style="z-index: 0;">"Predicting multiple diseases at once has never been easier. Our state-of-the-art machine learning algorithms analyze a range of health factors to provide you with reliable predictions for conditions such as heart disease, diabetes, cancer, Parkinson’s, and more. By identifying potential risks early, we empower you to take proactive steps to improve your health and prevent serious complications before they arise. Stay informed and take control of your future health today."</p>
+                    </div>
+                    <div class="overlay-text">
+                        <h2>Predict Your Disease</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleMerged" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleMerged" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+            
+
+
+    <div id="home" class="container text-center"style="padding: 30px;">
+        <div class="row">
+            <div class="col-md-6 col-lg-3 mb-4 d-flex justify-content-center">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ url_for('static', filename='card/heart.webp') }}" class="card-img-top" alt="..." style="height: 50%; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Heart Disease Prediction</h5>
+                        <p class="card-text">Identify potential heart-related conditions early and take steps to maintain a healthy cardiovascular system.</p>
+                        <a href="{{ url_for('heart') }}" class="btn btn-primary">Predict</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4 d-flex justify-content-center">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ url_for('static', filename='card/dia.jpg') }}" class="card-img-top" alt="..." style="height: 50%; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Diabetes Risk Assessment</h5>
+                        <p class="card-text">Understand your risk for diabetes and get personalized tips to manage and prevent the condition.</p>
+                        <a href="{{ url_for('diabetes') }}" class="btn btn-primary">Predict</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4 d-flex justify-content-center">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ url_for('static', filename='card/cancer.png') }}" class="card-img-top" alt="..." style="height: 50%; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Cancer Risk Analysis</h5>
+                        <p class="card-text">Gain insights into cancer risk factors and promote early detection to improve treatment outcomes.</p>
+                        <a href="{{ url_for('cancer') }}" class="btn btn-primary">Predict</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4 d-flex justify-content-center">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ url_for('static', filename='card/park.jpeg') }}" class="card-img-top" alt="..." style="height: 50%; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Parkinson's Disease Prediction</h5>
+                        <p class="card-text">Detect early signs of Parkinson's to plan proactive interventions and improve quality of life.</p>
+                        <a href="{{ url_for('parkinsons') }}" class="btn btn-primary">Predict</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="about" class="container text-center">
+        <div class="row">
+            <!-- About Us Heading -->
+            <div class="col-12">
+                <div class="about-section">
+                    <b style="font-size: 3em;">About Us</b>
+                </div>
+            </div>
+            
+            <!-- Video and Description -->
+            <div class="col-12 d-flex flex-column flex-md-row" style="padding-top: 29px;">
+                <!-- Video Section -->
+                <div class="col-12 col-md-6 mb-3 mb-md-0">
+                    <a href="#">
+                        <video style="width: 100%;" autoplay loop muted src="{{ url_for('static', filename='aboute.mp4') }}"></video>
+                    </a>
+                </div>
+    
+                <!-- Description Section -->
+                <div class="col-12 col-md-6">
+                    <h6>
+                        <p style="text-align:center">
+                            Our Multiple Disease Prediction System is an advanced AI-powered platform designed to assist individuals in predicting the likelihood of various health conditions, including heart disease, cancer, diabetes, Parkinson’s disease, and more. By analyzing user-specific data such as symptoms, medical history, and lifestyle factors, the system uses machine learning algorithms to provide accurate predictions and insights.
+                        </p>
+                        <p style="text-align:left">
+                            With this system, you can:
+                        </p>
+                        <p style="text-align:left">
+                            1. Get Early Detection: Predict potential diseases before symptoms worsen, enabling early intervention and better outcomes.
+                        </p>
+                        <p style="text-align:left">
+                            2. Receive Personalized Recommendations: Tailored advice and insights are offered based on your individual health data, empowering you to take informed actions.
+                        </p>
+                        <p style="text-align:left">
+                            3. Track Health Over Time: Monitor changes in health indicators and adjust lifestyle choices for improved wellness.
+                        </p>
+                        <p style="text-align:center">
+                            Whether you're concerned about a specific disease or want to track your overall health, our system brings you peace of mind with data-driven predictions and guidance.
+                        </p>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="faq's"class="container text-center " style="padding-bottom: 20px;">
+        <div class="row">
+            <!-- About Us Heading -->
+            <div class="col-12">
+                <div class="about-section">
+                    <b style="font-size: 3em;">FAQ's</b>
+                </div>
+            </div>
+            <div class="col-12" style="padding-top: 30px; text-align: left;">
+                <div id="faqAccordion">
+                    <!-- FAQ 1 -->
+                    <div class="card faq-card">
+                        <div class="card-header" id="faq1">
+                            <h5 class="mb-0 faq-title" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                                What is the Multiple Disease Prediction System?
+                            </h5>
+                        </div>
+                        <div id="collapse1" class="collapse" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
+                            <div class="card-body">
+                                It's an AI-powered platform that predicts the likelihood of various diseases, including heart disease, cancer, diabetes, and Parkinson’s, based on your health data.
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- FAQ 2 -->
+                    <div class="card faq-card">
+                        <div class="card-header" id="faq2">
+                            <h5 class="mb-0 faq-title" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                How does the system predict diseases?
+                            </h5>
+                        </div>
+                        <div id="collapse2" class="collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
+                            <div class="card-body">
+                                The system uses machine learning to analyze your health data (e.g., symptoms, medical history) and provide risk predictions for different diseases.
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- FAQ 3 -->
+                    <div class="card faq-card">
+                        <div class="card-header" id="faq3">
+                            <h5 class="mb-0 faq-title" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                Is my data secure?
+                            </h5>
+                        </div>
+                        <div id="collapse3" class="collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
+                            <div class="card-body">
+                                Yes, we use encryption and strict security protocols to protect your personal health data.
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- FAQ 4 -->
+                    <div class="card faq-card">
+                        <div class="card-header" id="faq4">
+                            <h5 class="mb-0 faq-title" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                Can the system diagnose diseases?
+                            </h5>
+                        </div>
+                        <div id="collapse4" class="collapse" aria-labelledby="faq4" data-bs-parent="#faqAccordion">
+                            <div class="card-body">
+                                No, it provides predictions and insights, but a healthcare professional is needed for a proper diagnosis.
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- FAQ 5 -->
+                    <div class="card faq-card">
+                        <div class="card-header" id="faq5">
+                            <h5 class="mb-0 faq-title" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                How accurate are the predictions?
+                            </h5>
+                        </div>
+                        <div id="collapse5" class="collapse" aria-labelledby="faq5" data-bs-parent="#faqAccordion">
+                            <div class="card-body">
+                                The system offers reliable predictions, but accuracy depends on the data provided. Always consult a healthcare provider for confirmation.
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- FAQ 6 -->
+                    <div class="card faq-card">
+                        <div class="card-header" id="faq6">
+                            <h5 class="mb-0 faq-title" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                                Can I track my health over time?
+                            </h5>
+                        </div>
+                        <div id="collapse6" class="collapse" aria-labelledby="faq6" data-bs-parent="#faqAccordion">
+                            <div class="card-body">
+                                Yes, the system allows you to monitor your health metrics and track changes over time.
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- FAQ 7 -->
+                    <div class="card faq-card">
+                        <div class="card-header" id="faq7">
+                            <h5 class="mb-0 faq-title" data-bs-toggle="collapse" data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                                What diseases can the system predict?
+                            </h5>
+                        </div>
+                        <div id="collapse7" class="collapse" aria-labelledby="faq7" data-bs-parent="#faqAccordion">
+                            <div class="card-body">
+                                It predicts diseases like heart disease, cancer, diabetes, and Parkinson’s disease.
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- FAQ 8 -->
+                    <div class="card faq-card">
+                        <div class="card-header" id="faq8">
+                            <h5 class="mb-0 faq-title" data-bs-toggle="collapse" data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+                                How can I get started?
+                            </h5>
+                        </div>
+                        <div id="collapse8" class="collapse" aria-labelledby="faq8" data-bs-parent="#faqAccordion">
+                            <div class="card-body">
+                                Sign up, input your health details, and receive personalized disease predictions and insights.
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- FAQ 9 -->
+                    <div class="card faq-card">
+                        <div class="card-header" id="faq9">
+                            <h5 class="mb-0 faq-title" data-bs-toggle="collapse" data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
+                                Is the system free?
+                            </h5>
+                        </div>
+                        <div id="collapse9" class="collapse" aria-labelledby="faq9" data-bs-parent="#faqAccordion">
+                            <div class="card-body">
+                                We offer both free and premium options. The free version includes basic features, while premium offers advanced tracking and predictions.
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- FAQ 10 -->
+                    <div class="card faq-card">
+                        <div class="card-header" id="faq10">
+                            <h5 class="mb-0 faq-title" data-bs-toggle="collapse" data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
+                                Should I consult a doctor after using the system?
+                            </h5>
+                        </div>
+                        <div id="collapse10" class="collapse" aria-labelledby="faq10" data-bs-parent="#faqAccordion">
+                            <div class="card-body">
+                                Yes, the system provides predictions, but a healthcare professional should be consulted for a proper diagnosis and treatment.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+    <div class="container my-5">
+        <div class="row">
+            <!-- Feedback Form Section -->
+            <div class="col-md-6" id="feedback_section">
+                <div class="feedback-form-container p-4 border rounded">
+                    <h3 class="text-center mb-4">
+                        <b>
+                            We Want Your Opinion!
+                        </b>
+                    </h3>
+
+                    <div class="row">
+                        <div class="col-12">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    <div class="alert alert-{{ messages[0][0] }} alert-dismissible fade show" role="alert" id="flash-message">
+                                        {{ messages[0][1] }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                      </div>
+
+                    <form action="/" method="POST">
+                        <!-- Rating Input -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <b>
+                                    Rating
+                                </b>
+                                
+                            </label>
+                            <div class="rating">
+                                <input type="radio" id="star5" name="rating" value="5">
+                                <label for="star5">&#9733;</label>
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4">&#9733;</label>
+                                <input type="radio" id="star3" name="rating" value="3">
+                                <label for="star3">&#9733;</label>
+                                <input type="radio" id="star2" name="rating" value="2">
+                                <label for="star2">&#9733;</label>
+                                <input type="radio" id="star1" name="rating" value="1">
+                                <label for="star1">&#9733;</label>
+                            </div>
+                        </div>
+        
+                        <!-- Name Input -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">
+                                <b>
+                                    Your Name
+                                </b>
+                                
+                            </label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+                        </div>
+        
+                        <!-- Optional Comment Input -->
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">
+                                <b>
+                                    Comment (Optional)
+                                </b>
+                                
+                            </label>
+                            <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Leave a comment..."></textarea>
+                        </div>
+        
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary w-100">Submit Feedback</button>
+                    </form>
+                </div>
+            </div>
+        
+            <!-- Feedback Display Section -->
+            <div class="col-md-6">
+                <div class="feedback-list" style="max-height: 400px; overflow-y: auto;">
+                    <h3>Previous Feedback:</h3>
+                    <ul>
+                      {% for feedback in feedbacks %}
+                      <div class="feedback-item mb-3">
+                          <strong>{{ feedback[1] }}</strong> - 
+                          <span>{% for i in range(feedback[2]) %}&#9733;{% endfor %}</span>
+                          <p class="mb-0">{{ feedback[3] if feedback[3] else 'No Comment' }}</p>
+    
+                          <!-- Button to show secret key input -->
+                          <button class="btn btn-danger btn-sm" onclick="showSecretKeyInput('{{ feedback[0] }}')">Delete</button>
+    
+    
+                          
+                          <!-- Secret Key Input Form -->
+                        <div id="delete-form-{{ feedback[0] }}" class="mt-2" style="display: none;">
+                            <form action="/delete-feedback/{{ feedback[0] }}" method="POST">
+                                <input 
+                                    type="password" 
+                                    name="secret_key" 
+                                    placeholder="Enter Admin Code" 
+                                    class="form-control mb-2"
+                                    autocomplete="new-password"
+                                    required>
+                                <button type="submit" class="btn btn-danger btn-sm">Confirm Delete</button>
+                            </form>
+                        </div>
+                      </div>
+                      {% else %}
+                      <p>No feedback yet. Be the first to share your opinion!</p>
+                      {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+          <p>&copy; 2025 Multiple Disease Prediction. All Rights Reserved</p>
+          <!-- <p>Designed and Developed by Sanjana Hazra</p> -->
+        </div>
+    </footer>
+</body>
+
+
+<!-- Add JavaScript for dynamic display of the secret key input -->
+<script>
+    function showSecretKeyInput(feedbackId) {
+        var secretKeyInput = document.getElementById("secret-key-input-" + feedbackId);
+        secretKeyInput.style.display = "block"; // Show the secret key input
+    }
+</script>
+
+<script>
+    // Set a timeout to automatically hide the message after 3 seconds
+    window.addEventListener('DOMContentLoaded', (event) => {
+        let flashMessage = document.getElementById("flash-message");
+        if (flashMessage) {
+            setTimeout(function() {
+                flashMessage.classList.remove('show');
+                flashMessage.classList.add('fade');
+            }, 3000);  // 3000 milliseconds = 3 seconds
+        }
+    });
+</script>
+
+
+<!-- feedback_delete -->
+ <script>
+    function showSecretKeyInput(feedbackId) {
+    const form = document.getElementById(`delete-form-${feedbackId}`);
+    if (form.style.display === "none") {
+        form.style.display = "block";
+    } else {
+        form.style.display = "none";
+    }
+}
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</html>

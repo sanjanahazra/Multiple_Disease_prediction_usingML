@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Heart Disease Prediction</title>
+</head>
+
+<style>
+
+.about-section {
+                      background-color: #f1abab; /* Light box color */
+                      /* padding: 20px 50px; Padding for spacing */
+                      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+                      /* text-align: left; Left-align the text */
+                      width: 100%; /* Full-width section */
+                    }
+                    .about-section h1 {
+                      margin: 0;
+                      font-size: 28px;
+                      color: #333; /* Text color */
+                    }
+                    * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            /* display: flex; */
+            /* justify-content: center; */
+            align-items: center;
+            /* height: 100vh; */
+            /* padding: 20px; */
+        }
+
+        .form-container {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-section {
+            padding: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 6px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 15px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  /* position: fixed; */
+  width: 100%;
+  bottom: 0;
+}
+
+footer a {
+  color: #f2f2f2;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+.topic-card {
+      background: #cdcff5;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .topic-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    strong {
+      color: #0056b3;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .container-title {
+      margin-bottom: 30px;
+    }
+
+    .container-title h1 {
+      font-size: 2.5rem;
+      color: #333;
+      font-weight: bold;
+    }
+
+</style>
+
+
+<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #094561;">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- <a class="navbar-brand" href="">
+      <img src="" alt="Multiple Disease Prediction" style="height: 60px;">
+    </a> -->
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}" style="
+            color: #ffffff;">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('home') }}"style="
+            color: #ffffff;">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('heart') }}"style="
+            color: #ffffff;">Heart</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('diabetes') }}"style="
+            color: #ffffff;">Diabetes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('cancer') }}"style="
+            color: #ffffff;">Cancer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('parkinsons') }}"style="
+            color: #ffffff;">Parkinson’s</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('home') }}"style="
+            color: #ffffff;">FAQ</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<body>
+    <div class="about-section" style="text-align: center; margin-top: 80px;">
+        <b style="font-size: 2.5em;">Heart Disease Prediction</b>
+    </div>
+    <div class="container text-center">
+      <div class="row" style="margin-top: 20px; padding-bottom: 20px;">
+        <div class="col" style="background-color: #75b798; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); padding: 20px;">
+          <h1 style="background-color: #a4c1e5; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">Enter Your Details</h1>
+          <form action="/heart" method="post">
+            <div class="form-grid">
+                <!-- Left Column -->
+                  <div class="form-section">
+                    <div class="form-group">
+                      <label for="age">Age(1 - 100):</label>
+                      <input type="number" name="age" value="{{ input_data.get('age', '') }}" required min="1" max="100">
+                  </div>
+                  <div class="form-group">
+                      <label for="sex">Sex (1 = Male, 0 = Female):</label>
+                      <input type="number" name="sex" value="{{ input_data.get('sex', '') }}" required min="0" max="1">
+                  </div>
+                  <div class="form-group">
+                      <label for="cp">Chest Pain Type(0= no pain, 1= Typical Angina, 2 = Atypical Angina, 3 = Non-anginal Pain):</label>
+                      <input type="number" name="cp" value="{{ input_data.get('cp', '') }}" required min="0" max="3">
+                  </div>
+                  <div class="form-group">
+                      <label for="trestbps">Resting Blood Pressure(90-200):</label>
+                      <input type="number" name="trestbps" value="{{ input_data.get('trestbps', '') }}" required min="90" max="200">
+                  </div>
+                  <div class="form-group">
+                      <label for="chol">Cholesterol(100< Normal< 200,Borderline High: 200–239, High: ≥ 240):</label>
+                      <input type="number" name="chol" value="{{ input_data.get('chol', '') }}" required min="100" max="600">
+                  </div>
+                  <div class="form-group">
+                      <label for="fbs">Fasting Blood Sugar (1 = True, 0 = False):</label>
+                      <input type="number" name="fbs" value="{{ input_data.get('fbs', '') }}" required min="0" max="1">
+                  </div>
+                  
+                </div>
+    
+                <!-- Right Column -->
+                <div class="form-section">
+                  <div class="form-group">
+                    <label for="restecg">Resting Electrocardiographic Results( 0 = Normal, 1 = ST-T wave abnormality, 2 = Left ventricular hypertrophy ):</label>
+                    <input type="number" name="restecg" value="{{ input_data.get('restecg', '') }}" required min="0" max="2">
+                </div>
+                <div class="form-group">
+                    <label for="thalach">Maximum Heart Rate Achieved(70-220):</label>
+                    <input type="number" name="thalach" value="{{ input_data.get('thalach', '') }}" required min="70" max="220">
+                </div>
+                <div class="form-group">
+                    <label for="exang">Exercise Induced Angina (1 = Yes, 0 = No):</label>
+                    <input type="number" name="exang" value="{{ input_data.get('exang', '') }}" required min="0" max="1">
+                </div>
+                <div class="form-group">
+                    <label for="oldpeak">Depression Induced by Exercise(0=No , 1=Yes):</label>
+                    <input type="number" name="oldpeak" value="{{ input_data.get('oldpeak', '') }}" required min="0" max="1">
+                </div>
+                <div class="form-group">
+                    <label for="slope">Slope of Peak Exercise ST Segment(0 = No, 1 = Upsloping,2 = Downsloping ):</label>
+                    <input type="number" name="slope" value="{{ input_data.get('slope', '') }}" required min="0" max="2">
+                </div>
+                <div class="form-group">
+                    <label for="ca">Number of Major Vessels Colored by Fluoroscopy( 0= No , 1= One, 2= Two , 3=Three , 4=Four):</label>
+                    <input type="number" name="ca" value="{{ input_data.get('ca', '') }}" required min="0" max="4">
+                </div>
+                <div class="form-group">
+                    <label for="thal">Thalassemia (1 = Normal, 2 = Fixed Defect, 3 = Reversible Defect):</label>
+                    <input type="number" name="thal" value="{{ input_data.get('thal', '') }}" required min="1" max="3">
+                </div>
+              </div>
+            </div>
+            <button type="submit">Predict</button>
+          </form>
+        </div>
+        
+        <div class="col" style="background-color: #75b798; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); padding: 20px;">
+          <h1 style="background-color: rgba(164, 193, 229, 0.8); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">Prediction Result</h1>
+          <p style="background-color: rgba(198, 229, 164, 0.8); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); text-align: left; padding: 20px;">
+            <b>
+              Your Predictive Result is: {{ prediction }}
+            </b>
+          </p>
+          {% if prediction %}
+          <p>Please consult with a doctor for further diagnosis.</p>
+          {% endif %}
+          <div style="display: flex; gap: 50px; justify-content: center;">
+            <a href="/heart" class="btn btn-primary">Check Again</a>
+            <a href="/" class="btn btn-secondary">Back To Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="topic-card">
+            <h2>What is Heart Disease?</h2>
+            <p>
+              Heart disease refers to a group of conditions that affect the heart's structure and function. 
+              It includes problems like coronary artery disease (narrowing of the arteries), arrhythmias 
+              (irregular heartbeat), and heart failure (weakened heart muscles). It’s one of the leading 
+              causes of death globally, but early detection and lifestyle changes can significantly reduce 
+              its impact.
+            </p>
+          </div>
+  
+          <div class="topic-card">
+            <h2>How Does Heart Disease Develop?</h2>
+            <p>Heart disease develops over time and is often the result of a combination of risk factors, including:</p>
+            <ul>
+              <li><strong>Unhealthy Lifestyle:</strong> Poor diet, lack of physical activity, and smoking increase the risk of plaque buildup in the arteries.</li>
+              <li><strong>Genetics:</strong> Family history of heart disease can make you more prone to developing it.</li>
+              <li><strong>Other Medical Conditions:</strong> High blood pressure, high cholesterol, diabetes, and obesity are significant contributors.</li>
+              <li><strong>Stress and Poor Sleep:</strong> Chronic stress and sleep disorders can negatively impact heart health.</li>
+              <li><strong>Aging:</strong> The risk of heart disease increases with age.</li>
+            </ul>
+          </div>
+  
+          <div class="topic-card">
+            <h2>How Can Heart Disease Be Prevented?</h2>
+            <p>Preventing heart disease starts with adopting a healthy lifestyle and managing risk factors effectively. Here are some key steps to protect your heart:</p>
+            <ul>
+              <li><strong>Healthy Diet:</strong> Eat a balanced diet rich in fruits, vegetables, whole grains, lean protein, and healthy fats. Limit the intake of processed foods, salt, sugar, and saturated fats.</li>
+              <li><strong>Stay Active:</strong> Engage in regular physical activity, such as walking, jogging, swimming, or yoga, for at least 30 minutes a day. Include strength training exercises to improve cardiovascular health.</li>
+              <li><strong>Avoid Smoking and Alcohol:</strong> Quit smoking and avoid secondhand smoke exposure. Limit alcohol consumption to moderate levels.</li>
+              <li><strong>Manage Stress:</strong> Practice relaxation techniques such as meditation, deep breathing, or hobbies to reduce stress. Ensure adequate sleep, aiming for 7-9 hours per night.</li>
+              <li><strong>Regular Health Checkups:</strong> Monitor blood pressure, cholesterol levels, and blood sugar regularly. Consult a healthcare provider for early detection and management of potential risk factors.</li>
+            </ul>
+          </div>
+  
+          <div class="topic-card">
+            <h2>Why Early Detection Matters</h2>
+            <p>
+              Heart disease often progresses silently, showing symptoms like chest pain, shortness of breath, 
+              or fatigue only in advanced stages. Early detection through regular screening and prediction 
+              systems like this one can save lives by enabling timely medical intervention.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+
+    <footer>
+      <div class="footer-content">
+        <p>&copy; 2025 Multiple Disease Prediction. All Rights Reserved. || Designed and Developed by Sanjana Hazra</p>
+        <!-- <p>Designed and Developed by Sanjana Hazra</p> -->
+      </div>
+  </footer>
+</body>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</html>
